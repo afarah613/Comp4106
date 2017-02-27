@@ -7,51 +7,58 @@ import java.util.*;
 
 public class Board implements IProductionSystem {
 
-
     private int[] tiles;
     private int rows;
-    private  int columns;
-    private IProductionSystem prevState;
+    private double stateValue;
+    private int level;
+    private int columns;
+    private int heuristic;
+    private IProductionSystem previousState;
 
-    private static final int[] solution3by3 = new int[]
-            {
-                    1,2,3,4,0,5,6,7,8
-            };
 
-    private static final int[] solution2by4 = new int[]
-            {
-                    1,2,3,4,5,6,7,0
-            };
-
-    private static final int[] solution2by5 = new int[]
-            {
-                    1,2,3,4,5,6,7,8,9,0
-            };
-
-    public Board(int[] tiles, int rows, int columns, IProductionSystem prevState)
+    public Board(int[] tiles, int rows, int columns, IProductionSystem prevState, int level, int heuristic)
     {
         this.rows = rows;
         this.columns = columns;
         this.tiles = new int[rows * columns];
-        this.prevState = prevState;
+        this.previousState = prevState;
+        this.level = level;
+        this.heuristic = heuristic;
         for(int i=0; i<tiles.length; i++)
         {
             this.tiles[i]=tiles[i];
         }
+        this.stateValue = 1;
     }
 
     public boolean isSolved()
     {
-        if(this.rows == 3 && this.columns == 3)
-            return Arrays.equals(this.tiles, solution3by3);
-        else if(this.rows == 2 && this.columns == 4)
-            return Arrays.equals(this.tiles, solution2by4);
-        else if(this.rows == 2 && this.columns == 5)
-            return Arrays.equals(this.tiles, solution2by5);
-        return false;
+        for(int i =0;i<this.tiles.length;i++)
+        {
+            if(this.tiles[i] != i)
+                return false;
+        }
+        return true;
     }
 
-    public Collection<Move> generateAllMoves()
+    public void setHeuristic(int heuristic)
+    {
+        this.heuristic = heuristic;
+    }
+
+    public Collection<IProductionSystem> generateAllChildStates(IProductionSystem previousState)
+    {
+        HashSet<IProductionSystem> productionSystemHashSet = new HashSet<>();
+
+        for(Move move: generateAllMoves())
+        {
+            productionSystemHashSet.add(applyMove(move, previousState));
+        }
+
+        return productionSystemHashSet;
+    }
+
+    private Collection<Move> generateAllMoves()
     {
         List<Move> moves = new ArrayList<>();
         moves.addAll(generateAllChessHorseMoves());
@@ -60,39 +67,43 @@ public class Board implements IProductionSystem {
         return moves;
     }
 
+    public double getStateValue()
+    {
+        return this.stateValue;
+    }
+
     private Collection<BoardMove> generateAllChessHorseMoves() {
 
         ArrayList<BoardMove> moves = new ArrayList<>();
         List<Integer> positions = new ArrayList<>();
 
-        for (int i = 0; i < this.tiles.length; i++) {
+        for (int currentPosition = 0; currentPosition < this.tiles.length; currentPosition++) {
 
-            if(this.tiles[i] != 0) {
+            if(this.tiles[currentPosition] != 0) {
 
-                int currentPosistion = i;
-                if (isValidColumn(currentPosistion, Direction.Left, 1)) {
-                    positions.add(currentPosistion - 1 - (this.columns * 2)); // down 2, 1 left
-                    positions.add(currentPosistion - 1 + (this.columns * 2)); // up 2, 1 left
+                if (isValidLeftRightMove(currentPosition, Direction.Left, 1)) {
+                    positions.add(currentPosition - 1 - (this.columns * 2)); // down 2, 1 left
+                    positions.add(currentPosition - 1 + (this.columns * 2)); // up 2, 1 left
                 }
 
-                if (isValidColumn(currentPosistion, Direction.Right, 1)) {
-                    positions.add(currentPosistion + 1 - (this.columns * 2)); // down 2, 1 right
-                    positions.add(currentPosistion + 1 + (this.columns * 2)); // up 2, 1 right
+                if (isValidLeftRightMove(currentPosition, Direction.Right, 1)) {
+                    positions.add(currentPosition + 1 - (this.columns * 2)); // down 2, 1 right
+                    positions.add(currentPosition + 1 + (this.columns * 2)); // up 2, 1 right
                 }
 
-                if (isValidColumn(currentPosistion, Direction.Left, 2)) {
-                    positions.add(currentPosistion - 2 - this.columns); // left 2, 1 down
-                    positions.add(currentPosistion - 2 + this.columns); // left 2, 1 up
+                if (isValidLeftRightMove(currentPosition, Direction.Left, 2)) {
+                    positions.add(currentPosition - 2 - this.columns); // left 2, 1 down
+                    positions.add(currentPosition - 2 + this.columns); // left 2, 1 up
                 }
 
-                if (isValidColumn(currentPosistion, Direction.Right, 2)) {
-                    positions.add(currentPosistion + 2 - this.columns); // right 2, 1 down
-                    positions.add(currentPosistion + 2 + this.columns); // right 2, 1 up
+                if (isValidLeftRightMove(currentPosition, Direction.Right, 2)) {
+                    positions.add(currentPosition + 2 - this.columns); // right 2, 1 down
+                    positions.add(currentPosition + 2 + this.columns); // right 2, 1 up
                 }
 
                 for (int position : positions) {
                     if (isValidPosition(position) && this.tiles[position] != 0)
-                        moves.add(new BoardMove(position, currentPosistion));
+                        moves.add(new BoardMove(position, currentPosition));
                 }
 
                 positions.clear();
@@ -108,14 +119,14 @@ public class Board implements IProductionSystem {
         int zeroPosition = getZeroPosition();
         List<Integer> positions = new ArrayList<>();
 
-        if(isValidColumn(zeroPosition, Direction.Left,1))
+        if(isValidLeftRightMove(zeroPosition, Direction.Left,1))
         {
             positions.add(zeroPosition -1);
             positions.add(zeroPosition -1 + this.columns); // leftUpHorizontal
             positions.add(zeroPosition -1 - this.columns); // leftDownHorizontal
         }
 
-        if(isValidColumn(zeroPosition, Direction.Right,1))
+        if(isValidLeftRightMove(zeroPosition, Direction.Right,1))
         {
             positions.add(zeroPosition +1);
             positions.add(zeroPosition +1 + this.columns); // rightUpHorizontal
@@ -138,7 +149,7 @@ public class Board implements IProductionSystem {
         return position < this.tiles.length && position >=0 ;
     }
 
-    private  boolean isValidColumn(int position,Direction direction, int move)
+    private  boolean isValidLeftRightMove(int position, Direction direction, int move)
     {
         int value = position % this.columns;
         if(direction == Direction.Left)
@@ -147,48 +158,85 @@ public class Board implements IProductionSystem {
             value = value + move;
         return value < this.columns && value >=0 ;
     }
-    private Board reverseMoves(Board board)
-    {
-        Board prevBoard = null;
-        Board currentBoard = board;
 
-        while(currentBoard != null)
+    private double countMisplacedTiles()
+    {
+        double count =0;
+
+        for(int i =0; i< this.tiles.length; i++)
         {
-            Board temp = (Board) currentBoard.prevState;
-            currentBoard.prevState = prevBoard;
-            prevBoard = currentBoard;
-            currentBoard = temp;
+            if(this.tiles[i] != i && this.tiles[i] != 0)
+            {
+                int column =  i % this.columns;
+                int goalColumns = this.tiles[i] % this.columns;
+                int row =  i/this.columns;
+                int goalRow = this.tiles[i]/this.columns;
+               if(row!=goalRow)
+                    count++;
+                if(column != goalColumns)
+                    count++;
+            }
         }
 
-        return prevBoard;
+        return count;
     }
 
-    public String getPathToSuccess(IProductionSystem productionSystem)
+    private double euclideanDistance()
     {
-        StringBuilder builder = new StringBuilder();
-        Board board = (Board) productionSystem;
-        board = reverseMoves(board);
-        int i =0;
-        while(board != null)
+        double value =0;
+
+        for(int i =0; i< this.tiles.length; i++)
         {
-            i++;
-            builder.append(board.toString());
-            board = (Board) board.prevState;
+            if(i!= this.tiles[i])
+            {
+                int y =  i % this.columns;
+                int goalY = this.tiles[i] % this.columns;
+                int x =  i/this.columns;
+                int goalX = this.tiles[i]/this.columns;
+                int absX = Math.abs(x - goalX);
+                int absY = Math.abs(y - goalY);
+                value+= Math.sqrt((Math.pow(absX,2) + Math.pow(absY,2)));
+            }
         }
 
-        return builder.toString();
+        return value;
     }
 
-    public Board applyMove(Move move, IProductionSystem prevState)
+    private void setValue()
+    {
+        double heuristicValue = 0;
+
+        if(this.heuristic == 1)
+            heuristicValue = this.countMisplacedTiles();
+        else if(this.heuristic == 2)
+            heuristicValue = this.euclideanDistance();
+        else if(this.heuristic == 3)
+            heuristicValue = (this.countMisplacedTiles() + this.euclideanDistance())/2;
+
+        this.stateValue = heuristicValue + this.level;
+    }
+
+    public IProductionSystem getPreviousState()
+    {
+        return this.previousState;
+    }
+
+    public void setPreviousState(IProductionSystem previousState)
+    {
+        this.previousState = previousState;
+    }
+
+    private Board applyMove(Move move, IProductionSystem prevState)
     {
         BoardMove boardMove = (BoardMove) move;
         int pos1 = boardMove.position1;
         int pos2 = boardMove.position2;
 
-        Board board = new Board(this.tiles, this.rows, this.columns, prevState);
+        Board board = new Board(this.tiles, this.rows, this.columns, prevState, this.level+1,this.heuristic);
         int temp = board.tiles[pos2];
         board.tiles[pos2]= board.tiles[pos1];
         board.tiles[pos1]= temp;
+        board.setValue();
 
         return board;
     }

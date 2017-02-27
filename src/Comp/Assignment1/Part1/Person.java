@@ -1,7 +1,7 @@
 package Comp.Assignment1.Part1;
 
 
-public class Person {
+public class Person implements Comparable<Person> {
 
     private int crossingTime;
     private String name;
@@ -22,4 +22,14 @@ public class Person {
     {
         return  this.crossingTime;
     }
+
+    public String toString()
+    {
+        return this.crossingTime + "";
+    }
+
+    public int compareTo(Person other) {
+        return Integer.compare(this.crossingTime, other.crossingTime);
+    }
+
 }

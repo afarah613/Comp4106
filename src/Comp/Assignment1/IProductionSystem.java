@@ -8,9 +8,9 @@ import java.util.Collection;
 public interface IProductionSystem {
 
     boolean isSolved();
-    IProductionSystem applyMove(Move move, IProductionSystem prevState);
-    Collection<Move> generateAllMoves();
-    String getPathToSuccess(IProductionSystem productionSystem);
-
-
+    double getStateValue();
+    void setHeuristic(int heuristic);
+    void setPreviousState(IProductionSystem previousState);
+    IProductionSystem getPreviousState();
+    Collection<IProductionSystem> generateAllChildStates(IProductionSystem previousState);
 }
