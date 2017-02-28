@@ -4,6 +4,7 @@ import Comp.Assignment1.IProductionSystem;
 import Comp.Assignment1.Move;
 
 import java.util.*;
+import java.util.regex.Matcher;
 
 public class Board implements IProductionSystem {
 
@@ -194,7 +195,13 @@ public class Board implements IProductionSystem {
         {
             if(i!= this.tiles[i])
             {
-                ++value;
+                int column =  i % this.columns;
+                int goalColumns = this.tiles[i] % this.columns;
+                int row =  i/this.columns;
+                int goalRow = this.tiles[i]/this.columns;
+                int x = Math.abs(column - goalColumns);
+                int y = Math.abs(goalRow - row);
+                value+= Math.sqrt(Math.pow(x,1) + Math.pow(y,1)) ;
             }
         }
 
@@ -208,7 +215,7 @@ public class Board implements IProductionSystem {
         if(this.heuristic == 1)
             heuristicValue = this.rowsAndColumnsOutOfPlace();
         else if(this.heuristic == 2)
-            heuristicValue = this.outOfPlace();
+            heuristicValue = outOfPlace();
         else if(this.heuristic == 3)
             heuristicValue = (this.rowsAndColumnsOutOfPlace() + this.outOfPlace())/2;
 

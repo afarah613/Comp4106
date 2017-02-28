@@ -9,19 +9,19 @@ public class TransportationSystem implements IProductionSystem {
 
     private ArrayList<Person> leftSide;
     private ArrayList<Person> rightSide;
-    private int boat;
+    private int torch;
     private int time;
     private int stateValue;
     private int level;
     private int heuristic;
 
-    private static final int boatOnLeft = 0;
-    private static final int boatOnRight = 1;
+    private static final int torchOnLeft = 0;
+    private static final int torchOnRight = 1;
     private IProductionSystem previousState;
 
     public TransportationSystem(ArrayList<Person> leftSide,
                                 ArrayList<Person> rightSide,
-                                int boat,
+                                int torch,
                                 int time,
                                 int level,
                                 int heuristic,
@@ -30,7 +30,7 @@ public class TransportationSystem implements IProductionSystem {
         this.leftSide = new ArrayList<>(leftSide);
         this.rightSide = new ArrayList<>(rightSide);
         this.time = time;
-        this.boat = boat;
+        this.torch = torch;
         this.level = level;
         this.heuristic = heuristic;
         this.previousState = prevState;
@@ -66,9 +66,7 @@ public class TransportationSystem implements IProductionSystem {
 
     private Collection<Move> generateAllMoves()
     {
-        List<Move> moves = new ArrayList<>();
-
-        if(boat == boatOnLeft)
+        if(torch == torchOnLeft)
              return generateAllLeftToRightMoves();
 
         return generateAllRightToLeftMoves();
@@ -162,12 +160,12 @@ public class TransportationSystem implements IProductionSystem {
     {
         TransportationMove transportationMove = (TransportationMove) move;
 
-        if(this.boat == boatOnLeft)
+        if(this.torch == torchOnLeft)
         {
             TransportationSystem newState = new TransportationSystem(
                     this.leftSide,
                     this.rightSide,
-                    boatOnRight,
+                    torchOnRight,
                     this.time,
                     this.level + transportationMove.transportationTime,
                     this.heuristic,
@@ -182,7 +180,7 @@ public class TransportationSystem implements IProductionSystem {
             TransportationSystem newState = new TransportationSystem(
                     this.leftSide,
                     this.rightSide,
-                    boatOnLeft,
+                    torchOnLeft,
                     this.time,
                     this.level + transportationMove.transportationTime,
                     this.heuristic,
@@ -208,9 +206,9 @@ public class TransportationSystem implements IProductionSystem {
         return person2CrossingTime;
     }
 
-    private String getSideOfBoat()
+    private String getTorchSide()
     {
-        if(boat == boatOnLeft)
+        if(torch == torchOnLeft)
             return "Left side";
         return "Right side";
     }
@@ -234,7 +232,7 @@ public class TransportationSystem implements IProductionSystem {
             builder.append(person.getCrossingTime() + " ");
         }
 
-        builder.append("\nBoat: " + getSideOfBoat() + "\nElapsed Time: " +this.time + "\n\n");
+        builder.append("\nTorch: " + getTorchSide() + "\nElapsed Time: " +this.time + "\n\n");
         return builder.toString();
     }
 }

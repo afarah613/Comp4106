@@ -110,8 +110,8 @@ public class ProductionSystemSolver {
 
                          if(newState.getStateValue() < openState.getStateValue())
                          {
-                             openState.setStateValue(newState.getStateValue());
-                             openState.setPreviousState(newState.getPreviousState());
+                             open.remove(openState);
+                             open.add(newState);
                          }
                      }
 

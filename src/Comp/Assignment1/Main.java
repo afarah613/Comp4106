@@ -21,18 +21,18 @@ public class Main {
 //        String s = ProductionSystemSolver.getPathToSuccess(productionSystem);
 //        System.out.print(s);
 //
-//        int[] tiles = new int[] {9,8,7,6,5,4,3,2,1,0};
+       int[] tiles = new int[] {5,6,7,8,9,4,0,3,2,1};
 //
-//        long startTime = System.currentTimeMillis();
+       long startTime = System.currentTimeMillis();
 //
-//        Board board = new Board(tiles, 2, 5,null,0,1);
-//        IProductionSystem productionSystem = ProductionSystemSolver.AStarSearch( board);
-//
-//        String solved2 = ProductionSystemSolver.getPathToSuccess(productionSystem);
-//        System.out.println(solved2);
-//        long endTime = System.currentTimeMillis();
-//        System.out.println((endTime - startTime)/1000);
+        Board board = new Board(tiles, 2, 5,null,0,2 );
+        IProductionSystem productionSystem = ProductionSystemSolver.AStarSearch( board);
 
-        Simulation.simulate();
+        String solved2 = ProductionSystemSolver.getPathToSuccess(productionSystem);
+        System.out.println(solved2);
+        long endTime = System.currentTimeMillis();
+        System.out.println((endTime - startTime)/1000);
+
+        //Simulation.simulate();
     }
 }
