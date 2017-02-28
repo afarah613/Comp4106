@@ -181,8 +181,8 @@ public class Simulation {
                 }
                 else if(line.equals("a*"))
                 {
-                    long startTime = System.currentTimeMillis();
                     productionSystem.setHeuristic(getHeuristic());
+                    long startTime = System.currentTimeMillis();
                     IProductionSystem finalState = ProductionSystemSolver.AStarSearch(productionSystem);
                     String solved = ProductionSystemSolver.getPathToSuccess(finalState);
                     System.out.println(solved);

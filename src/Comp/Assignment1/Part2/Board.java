@@ -9,7 +9,7 @@ public class Board implements IProductionSystem {
 
     private int[] tiles;
     private int rows;
-    private double stateValue;
+    private int stateValue;
     private int level;
     private int columns;
     private int heuristic;
@@ -67,9 +67,14 @@ public class Board implements IProductionSystem {
         return moves;
     }
 
-    public double getStateValue()
+    public int getStateValue()
     {
         return this.stateValue;
+    }
+
+    public void setStateValue(int value)
+    {
+        this.stateValue = value;
     }
 
     private Collection<BoardMove> generateAllChessHorseMoves() {
@@ -159,9 +164,9 @@ public class Board implements IProductionSystem {
         return value < this.columns && value >=0 ;
     }
 
-    private double countMisplacedTiles()
+    private int rowsAndColumnsOutOfPlace()
     {
-        double count =0;
+        int count =0;
 
         for(int i =0; i< this.tiles.length; i++)
         {
@@ -181,21 +186,15 @@ public class Board implements IProductionSystem {
         return count;
     }
 
-    private double euclideanDistance()
+    private int outOfPlace()
     {
-        double value =0;
+        int value =0;
 
         for(int i =0; i< this.tiles.length; i++)
         {
             if(i!= this.tiles[i])
             {
-                int y =  i % this.columns;
-                int goalY = this.tiles[i] % this.columns;
-                int x =  i/this.columns;
-                int goalX = this.tiles[i]/this.columns;
-                int absX = Math.abs(x - goalX);
-                int absY = Math.abs(y - goalY);
-                value+= Math.sqrt((Math.pow(absX,2) + Math.pow(absY,2)));
+                ++value;
             }
         }
 
@@ -204,14 +203,14 @@ public class Board implements IProductionSystem {
 
     private void setValue()
     {
-        double heuristicValue = 0;
+        int heuristicValue = 0;
 
         if(this.heuristic == 1)
-            heuristicValue = this.countMisplacedTiles();
+            heuristicValue = this.rowsAndColumnsOutOfPlace();
         else if(this.heuristic == 2)
-            heuristicValue = this.euclideanDistance();
+            heuristicValue = this.outOfPlace();
         else if(this.heuristic == 3)
-            heuristicValue = (this.countMisplacedTiles() + this.euclideanDistance())/2;
+            heuristicValue = (this.rowsAndColumnsOutOfPlace() + this.outOfPlace())/2;
 
         this.stateValue = heuristicValue + this.level;
     }

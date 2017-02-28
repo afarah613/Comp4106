@@ -11,7 +11,7 @@ public class TransportationSystem implements IProductionSystem {
     private ArrayList<Person> rightSide;
     private int boat;
     private int time;
-    private double stateValue;
+    private int stateValue;
     private int level;
     private int heuristic;
 
@@ -40,6 +40,11 @@ public class TransportationSystem implements IProductionSystem {
     public boolean isSolved()
     {
         return this.leftSide.isEmpty();
+    }
+
+    public void setStateValue(int value)
+    {
+        this.stateValue = value;
     }
 
     public Collection<IProductionSystem> generateAllChildStates(IProductionSystem previousState)
@@ -100,9 +105,9 @@ public class TransportationSystem implements IProductionSystem {
         return moves;
     }
 
-    private double maxCrossingTime(List<Person> persons)
+    private int maxCrossingTime(List<Person> persons)
     {
-        double max =0;
+        int max =0;
 
         for (Person person: persons) {
 
@@ -114,11 +119,11 @@ public class TransportationSystem implements IProductionSystem {
         return max;
     }
 
-    private double maxNCrossingTime(List<Person> persons)
+    private int maxNCrossingTime(List<Person> persons)
     {
         int n = this.leftSide.size()/2;
         int i = this.leftSide.size()-1;
-        double sumN = 0;
+        int sumN = 0;
         Collections.sort(this.leftSide);
 
         while(n>0)
@@ -133,7 +138,7 @@ public class TransportationSystem implements IProductionSystem {
 
     private void setValue() {
 
-        double heuristicValue;
+        int heuristicValue;
         if (this.heuristic == 1)
             heuristicValue = maxCrossingTime(this.leftSide);
         else if (this.heuristic == 2)
@@ -143,7 +148,7 @@ public class TransportationSystem implements IProductionSystem {
         this.stateValue = heuristicValue + this.level;
     }
 
-    public double getStateValue()
+    public int getStateValue()
     {
         return this.stateValue;
     }

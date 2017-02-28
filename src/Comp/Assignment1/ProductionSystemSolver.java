@@ -98,23 +98,25 @@ public class ProductionSystemSolver {
                      return newState;
                  }
 
-                 boolean inOpen = open.contains(newState);
                  boolean inClosed = closed.contains(newState);
-
-                 if (!inClosed && !inOpen) {
-                     open.add(newState);
-                 }
-
-                 else
+                 if(!inClosed)
                  {
-                     IProductionSystem oldState = inOpen ? getObject(open, newState): getObject(closed, newState);
-
-                     if(oldState.getStateValue() > newState.getStateValue()) {
-                         boolean remove = inOpen ? open.remove(oldState) : closed.remove(oldState);
+                     boolean inOpen = open.contains(newState);
+                     if(!inOpen)
                          open.add(newState);
-                         i++;
+                     else
+                     {
+                         IProductionSystem openState = getObject(open, newState);
+
+                         if(newState.getStateValue() < openState.getStateValue())
+                         {
+                             openState.setStateValue(newState.getStateValue());
+                             openState.setPreviousState(newState.getPreviousState());
+                         }
                      }
+
                  }
+
              }
          }
 
@@ -143,13 +145,16 @@ public class ProductionSystemSolver {
         StringBuilder builder = new StringBuilder();
         productionSystem = reverseStates(productionSystem);
 
+        int count = 0;
+
         while(productionSystem != null)
         {
             builder.append(productionSystem.toString());
             productionSystem =  productionSystem.getPreviousState();
+            count++;
         }
 
-        return builder.toString();
+        return builder.toString() + "Length: " + count;
     }
 
      private static IProductionSystem getObject(

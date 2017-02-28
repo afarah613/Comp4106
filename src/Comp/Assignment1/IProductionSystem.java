@@ -8,7 +8,8 @@ import java.util.Collection;
 public interface IProductionSystem {
 
     boolean isSolved();
-    double getStateValue();
+    int getStateValue();
+    void setStateValue(int value);
     void setHeuristic(int heuristic);
     void setPreviousState(IProductionSystem previousState);
     IProductionSystem getPreviousState();
