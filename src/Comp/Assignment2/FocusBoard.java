@@ -106,6 +106,12 @@ public class FocusBoard {
         return true;
     }
 
+    public boolean isGameOver()
+    {
+        // TODO check if game is over
+        return false;
+    }
+
     private  boolean isValidPosition(Position position)
     {
         return isValidPosition(position.getRow(), position.getColumn());
@@ -171,12 +177,6 @@ public class FocusBoard {
         }
 
         return builder.toString();
-    }
-
-    public static void main(String[] args)
-    {
-        FocusBoard board = new FocusBoard();
-        System.out.print(board);
     }
 }
 
