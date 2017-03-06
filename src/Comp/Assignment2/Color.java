@@ -3,7 +3,7 @@ package Comp.Assignment2;
 /**
  * Created by Ali on 2017-02-21.
  */
-public enum Player {
+public enum Color {
 
     Red{
         public String toString() {
@@ -15,9 +15,4 @@ public enum Player {
             return "G";
         }
     },
-    None{
-        public String toString() {
-            return "N";
-        }
-    }
 }

@@ -187,7 +187,7 @@ public class Board implements IProductionSystem {
         return count;
     }
 
-    private int outOfPlace()
+    private int distance()
     {
         int value =0;
 
@@ -215,9 +215,9 @@ public class Board implements IProductionSystem {
         if(this.heuristic == 1)
             heuristicValue = this.rowsAndColumnsOutOfPlace();
         else if(this.heuristic == 2)
-            heuristicValue = outOfPlace();
+            heuristicValue = distance();
         else if(this.heuristic == 3)
-            heuristicValue = (this.rowsAndColumnsOutOfPlace() + this.outOfPlace())/2;
+            heuristicValue = (this.rowsAndColumnsOutOfPlace() + this.distance())/2;
 
         this.stateValue = heuristicValue + this.level;
     }
