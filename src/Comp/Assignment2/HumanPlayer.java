@@ -29,12 +29,38 @@ public class HumanPlayer implements IPlayer {
         System.out.println("Select destination position.");
         Position opponentPosition = getPosition();
 
-        return new Move(currentPlayerPosition, opponentPosition);
+        int numberOfPieces = this.getNumberOfPieces();
+
+        return new Move(currentPlayerPosition, opponentPosition, numberOfPieces);
     }
 
     @Override
     public Color getColor() {
-        return null;
+        return this.color;
+    }
+
+    private int getNumberOfPieces()
+    {
+        int numberOfPieces = 0;
+
+        System.out.println("Enter the number of pieces you would like to move");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        while(true)
+        {
+            try{
+                String line = br.readLine();
+                numberOfPieces = Integer.parseInt(line);
+
+                if(numberOfPieces > 0)
+                    break;
+            }catch(Exception e){
+                System.err.println("Invalid Format! Please try again");
+                System.out.println("Enter the number of pieces you would like to move");
+            }
+        }
+
+        return numberOfPieces;
     }
 
     private Position getPosition()

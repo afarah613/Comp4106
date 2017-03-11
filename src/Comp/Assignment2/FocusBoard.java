@@ -1,18 +1,15 @@
 package Comp.Assignment2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FocusBoard {
 
-    private List<Color>[][] boardStacks;
+    private BoardPiece[][] board;
     private int redCaptured;
     private int greedCaptured;
-    private Color turn;
+    private char turn;
 
     private final int COLUMNS = 8;
     private final int ROWS = 8;
-    private final int MAXLISTSIZE = 5;
+    private final int MAXSIZE = 5;
 
     private final int[][] blockedPosition = {
             {0, 0},
@@ -29,8 +26,8 @@ public class FocusBoard {
 
     public FocusBoard() {
 
-        this.turn = Color.Green;
-        this.boardStacks = new List[ROWS][COLUMNS];
+        this.turn = 'G';
+        this.board = new BoardPiece[ROWS][COLUMNS];
         this.greedCaptured = 0;
         this.redCaptured = 0;
 
@@ -38,22 +35,21 @@ public class FocusBoard {
             for (int j = 0; j < COLUMNS; j++) {
                 if (isValidPosition(i, j)) {
                     if (i > 0 && i < 7 && j > 0 && j < 7) {
-                        this.boardStacks[i][j] = new ArrayList<>();
                         if(j%2 ==0) {
-                            this.boardStacks[i][j].add(Color.Green);
+                            this.board[i][j] = new BoardPiece("G");
                         }
                         else {
-                            this.boardStacks[i][j].add(Color.Red);
+                            this.board[i][j] = new BoardPiece("R");;
                         }
                     } else {
-                        this.boardStacks[i][j] = new ArrayList<>();
+                        this.board[i][j] = new BoardPiece("E");
                     }
                 }
             }
         }
     }
 
-    public FocusBoard(Color turn)
+    public FocusBoard(char turn)
     {
         this();
         this.turn = turn;
@@ -62,24 +58,21 @@ public class FocusBoard {
     private boolean canPlayMove(Move move)
     {
         Position currentPlayerPosition = move.getPlayerPosition();
-        Position opponentPosition = move.getOpponentPosition();
+        Position opponentPosition = move.getCapturePosition();
 
         if(!isValidPosition(currentPlayerPosition) || !isValidPosition(opponentPosition))
             return false;
 
-        List<Color> currentColorList = getElement(currentPlayerPosition);
-        List<Color> opponentList = getElement(opponentPosition);
+        BoardPiece currentPlayerPiece = getElement(currentPlayerPosition);
 
-        if(!currentColorList.isEmpty() && currentColorList.get(0) == turn
-                && (currentColorList.isEmpty() || opponentList.get(0) != turn))
+        if(!currentPlayerPiece.isEmpty() && currentPlayerPiece.getFirst() == turn
+                && currentPlayerPiece.length() >= move.getNumberOfPieces() && move.isInTheSameRowOrColumn())
         {
             int distance = currentPlayerPosition.calculateDistanceTo(opponentPosition);
-            return distance <= currentColorList.size();
-
+            return distance <= move.getNumberOfPieces();
         }
 
         return false;
-
     }
 
     public boolean applyMove(Move move)
@@ -88,20 +81,11 @@ public class FocusBoard {
             return false;
 
         Position currentPlayerPosition = move.getPlayerPosition();
-        Position opponentPosition = move.getOpponentPosition();
-        List<Color> currentColorStack = getElement(currentPlayerPosition);
-        List<Color> opponentStack = getElement(opponentPosition);
-
-        opponentStack.addAll(0, currentColorStack);
-        currentColorStack.clear();
-
-        if(opponentStack.size() > MAXLISTSIZE)
-        {
-            this.addToCapture(opponentStack.size() - MAXLISTSIZE);
-            opponentStack.removeAll(
-                    opponentStack.subList(MAXLISTSIZE, opponentStack.size()));
-        }
-
+        Position capturePosition = move.getCapturePosition();
+        BoardPiece currentPlayerPiece = getElement(currentPlayerPosition);
+        BoardPiece capturePlayerPiece = getElement(capturePosition);
+        this.addToCapturePile(move.getNumberOfPieces() + capturePlayerPiece.length());
+        currentPlayerPiece.capturePiece(capturePlayerPiece, move.getNumberOfPieces());
         this.switchTurn();
         return true;
     }
@@ -129,25 +113,28 @@ public class FocusBoard {
         return true;
     }
 
-    private List<Color> getElement(Position position)
+    private BoardPiece getElement(Position position)
     {
-        return this.boardStacks[position.getRow()][position.getColumn()];
+        return this.board[position.getRow()][position.getColumn()];
     }
 
     private void switchTurn()
     {
-        if(this.turn == Color.Green)
-            this.turn = Color.Red;
+        if(this.turn == 'G')
+            this.turn = 'R';
         else
-            this.turn = Color.Green;
+            this.turn = 'G';
     }
 
-    private void addToCapture(int total)
+    private void addToCapturePile(int total)
     {
-        if(this.turn == Color.Green)
-            this.greedCaptured += total;
-        else
-            this.redCaptured += total;
+        if(total > MAXSIZE)
+        {
+            if(this.turn == 'G')
+                this.greedCaptured += total - MAXSIZE;
+            else
+                this.redCaptured += total - MAXSIZE;
+        }
     }
 
     public String toString() {
@@ -157,25 +144,17 @@ public class FocusBoard {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if (isValidPosition(i, j)) {
-                    String playerString;
 
-                    if(!this.boardStacks[i][j].isEmpty())
-                        playerString = this.boardStacks[i][j].get(0).toString();
-                    else
-                        playerString = "N";
-
-                    int count = this.boardStacks[i][j].size();
-                    builder.append(count + playerString + " ");
-                }
-                else
-                {
-                    builder.append("   ");
+                    builder.append(this.board[i][j].toString());
+                } else {
+                    builder.append("      ");
                 }
             }
 
             builder.append("\n");
         }
-
+        builder.append("\nRed Capture: " + this.redCaptured + " Green Capture: " + this.greedCaptured);
+        builder.append("\nTurn: " + this.turn);
         return builder.toString();
     }
 }

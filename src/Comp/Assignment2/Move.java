@@ -5,20 +5,37 @@ package Comp.Assignment2;
  */
 public class Move {
 
+    private Position playerPosition;
+    private Position capturePosition;
+    private int numberOfPieces;
+
+    public Move (Position playerPosition, Position capturePosition)
+    {
+        this.playerPosition = playerPosition;
+        this.capturePosition = capturePosition;
+    }
+
+    public Move(Position playerPosition, Position capturePosition, int numberOfPieces)
+    {
+        this(playerPosition, capturePosition);
+        this.numberOfPieces = numberOfPieces;
+    }
+
     public Position getPlayerPosition() {
         return playerPosition;
     }
 
-    public Position getOpponentPosition() {
-        return opponentPosition;
+    public Position getCapturePosition() {
+        return capturePosition;
     }
 
-    private Position playerPosition;
-    private Position opponentPosition;
-
-    public Move (Position playerPosition, Position computerPosition)
+    public boolean isInTheSameRowOrColumn()
     {
-        this.playerPosition = playerPosition;
-        this.opponentPosition = computerPosition;
+        return this.playerPosition.getRow() == this.capturePosition.getRow()
+                || this.playerPosition.getColumn() == this.capturePosition.getColumn();
+    }
+
+    public int getNumberOfPieces() {
+        return numberOfPieces;
     }
 }
