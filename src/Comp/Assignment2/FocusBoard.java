@@ -52,6 +52,27 @@ public class FocusBoard {
         }
     }
 
+    public FocusBoard(FocusBoard board)
+    {
+        this.turn = board.turn;
+        this.board = new BoardPiece[ROWS][COLUMNS];
+        this.greedCaptured = board.greedCaptured;
+        this.redCaptured = board.redCaptured;
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+
+                Position position = new Position(i,j);
+                BoardPiece piece = board.getElement(position);
+
+                if(piece!=null)
+                {
+                    this.board[i][j] = new BoardPiece(piece);
+                }
+            }
+        }
+    }
+
     public FocusBoard(char turn)
     {
         this();

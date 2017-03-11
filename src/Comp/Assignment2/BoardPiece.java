@@ -16,6 +16,11 @@ public class BoardPiece {
         this.stack = new StringBuilder(piece);
     }
 
+    public BoardPiece(BoardPiece piece)
+    {
+        this.stack = new StringBuilder(piece.stack);
+    }
+
     public char getFirst()
     {
         return stack.charAt(0);
