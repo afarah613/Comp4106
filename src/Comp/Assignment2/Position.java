@@ -31,4 +31,9 @@ public class Position {
         int sumOfPowers = (int) (Math.pow(x,2) + Math.pow(y, 2));
         return (int) Math.sqrt(sumOfPowers);
     }
+
+    public String toString()
+    {
+        return this.row + ":" + this.column;
+    }
 }

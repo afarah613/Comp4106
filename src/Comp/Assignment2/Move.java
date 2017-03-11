@@ -38,4 +38,12 @@ public class Move {
     public int getNumberOfPieces() {
         return numberOfPieces;
     }
+
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Current Position: "+ playerPosition);
+        builder.append(" Capture Position: "+ capturePosition + " Number of Pieces " + numberOfPieces);
+        return builder.toString();
+    }
 }

@@ -1,5 +1,8 @@
 package Comp.Assignment2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FocusBoard {
 
     private BoardPiece[][] board;
@@ -73,6 +76,31 @@ public class FocusBoard {
         }
 
         return false;
+    }
+
+    public List<Move> generateAllMoves()
+    {
+        List<Move> moves =new ArrayList<>();
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+
+                Position position = new Position(i,j);
+                BoardPiece piece = this.getElement(position);
+
+                if(piece != null && piece.getFirst() == turn)
+                {
+                    for (Move move: piece.generateAllMoves(position))
+                    {
+                        if(this.canPlayMove(move))
+                            moves.add(move);
+                    }
+                }
+            }
+        }
+
+
+        return moves;
     }
 
     public boolean applyMove(Move move)
