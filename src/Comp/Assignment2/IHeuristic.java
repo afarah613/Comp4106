@@ -5,5 +5,5 @@ package Comp.Assignment2;
  */
 public interface IHeuristic {
 
-    int getValue(FocusBoard board, char color);
+    int getValue(FocusBoard board, IPlayer player);
 }

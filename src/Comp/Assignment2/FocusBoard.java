@@ -7,7 +7,7 @@ public class FocusBoard {
 
     private BoardPiece[][] board;
     private int redCaptured;
-    private int greedCaptured;
+    private int greenCaptured;
     private char currentTurn;
 
     public static final int COLUMNS = 8;
@@ -31,7 +31,7 @@ public class FocusBoard {
 
         this.currentTurn = BoardPiece.GREEN;
         this.board = new BoardPiece[ROWS][COLUMNS];
-        this.greedCaptured = 0;
+        this.greenCaptured = 0;
         this.redCaptured = 0;
 
         for (int i = 0; i < ROWS; i++) {
@@ -56,7 +56,7 @@ public class FocusBoard {
     {
         this.currentTurn = board.currentTurn;
         this.board = new BoardPiece[ROWS][COLUMNS];
-        this.greedCaptured = board.greedCaptured;
+        this.greenCaptured = board.greenCaptured;
         this.redCaptured = board.redCaptured;
 
         for (int i = 0; i < ROWS; i++) {
@@ -73,11 +73,6 @@ public class FocusBoard {
         }
     }
 
-    public FocusBoard(char turn)
-    {
-        this();
-        this.currentTurn = turn;
-    }
     public int getRedCaptured() {
         return redCaptured;
     }
@@ -87,8 +82,8 @@ public class FocusBoard {
         return this.board;
     }
 
-    public int getGreedCaptured() {
-        return greedCaptured;
+    public int getGreenCaptured() {
+        return greenCaptured;
 
     }
 
@@ -160,7 +155,7 @@ public class FocusBoard {
 
     public boolean isGameOver()
     {
-        if(this.greedCaptured == MAX_CAPTURED || this.redCaptured == MAX_CAPTURED)
+        if(this.greenCaptured == MAX_CAPTURED || this.redCaptured == MAX_CAPTURED)
             return true;
         return false;
     }
@@ -200,7 +195,7 @@ public class FocusBoard {
         if(total > BoardPiece.MAX_SIZE)
         {
             if(this.currentTurn == BoardPiece.GREEN)
-                this.greedCaptured += total - BoardPiece.MAX_SIZE;
+                this.greenCaptured += total - BoardPiece.MAX_SIZE;
             else
                 this.redCaptured += total - BoardPiece.MAX_SIZE;
         }
@@ -223,7 +218,7 @@ public class FocusBoard {
             builder.append("\n");
         }
 
-        builder.append("\nRED Capture: " + this.redCaptured + " GREEN Capture: " + this.greedCaptured);
+        builder.append("\nRED Capture: " + this.redCaptured + " GREEN Capture: " + this.greenCaptured);
         builder.append("\nTurn: " + this.currentTurn);
         return builder.toString();
     }

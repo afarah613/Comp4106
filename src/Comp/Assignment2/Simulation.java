@@ -34,6 +34,9 @@ public class Simulation {
             System.out.println(this.focusBoard);
             Move player2Move = player2.getMove();
 
+            if(this.focusBoard.isGameOver())
+                break;
+
             while(!this.focusBoard.canPlayMove(player2Move))
             {
                 System.out.println("Move is invalid! Please try again");
@@ -48,9 +51,10 @@ public class Simulation {
     public static void main(String[] args)
     {
         FocusBoard board = new FocusBoard();
-        IHeuristic heuristic = new CapturedHeuristics();
+        IHeuristic heuristic = new DifferenceHeuristic();
+        IHeuristic heuristic1 = new CapturedHeuristic();
         IPlayer player = new ComputerPlayer(BoardPiece.GREEN,heuristic,board);
-        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic,board);
+        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic1,board);
         Simulation simulation = new Simulation(board, player, player2);
         simulation.simulate();
     }
