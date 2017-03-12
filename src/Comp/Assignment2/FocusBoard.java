@@ -8,12 +8,11 @@ public class FocusBoard {
     private BoardPiece[][] board;
     private int redCaptured;
     private int greedCaptured;
-    private char turn;
+    private char currentTurn;
 
     public static final int COLUMNS = 8;
     public static final int ROWS = 8;
-    private final int MAXSIZE = 5;
-    private final int MAX_CAPTURED = 5;
+    private final int MAX_CAPTURED = 3;
 
     private final int[][] blockedPosition = {
             {0, 0},
@@ -30,7 +29,7 @@ public class FocusBoard {
 
     public FocusBoard() {
 
-        this.turn = 'G';
+        this.currentTurn = BoardPiece.GREEN;
         this.board = new BoardPiece[ROWS][COLUMNS];
         this.greedCaptured = 0;
         this.redCaptured = 0;
@@ -55,7 +54,7 @@ public class FocusBoard {
 
     public FocusBoard(FocusBoard board)
     {
-        this.turn = board.turn;
+        this.currentTurn = board.currentTurn;
         this.board = new BoardPiece[ROWS][COLUMNS];
         this.greedCaptured = board.greedCaptured;
         this.redCaptured = board.redCaptured;
@@ -77,7 +76,7 @@ public class FocusBoard {
     public FocusBoard(char turn)
     {
         this();
-        this.turn = turn;
+        this.currentTurn = turn;
     }
     public int getRedCaptured() {
         return redCaptured;
@@ -93,26 +92,29 @@ public class FocusBoard {
 
     }
 
-    public char getTurn()
+    public char getCurrentTurn()
     {
-        return this.turn;
+        return this.currentTurn;
     }
 
-    private boolean canPlayMove(Move move)
+    public boolean canPlayMove(Move move)
     {
         Position currentPlayerPosition = move.getPlayerPosition();
-        Position opponentPosition = move.getCapturePosition();
+        Position capturePosition = move.getCapturePosition();
 
-        if(!isValidPosition(currentPlayerPosition) || !isValidPosition(opponentPosition))
+        if(!isValidPosition(currentPlayerPosition)
+                || !isValidPosition(capturePosition)
+                || !currentPlayerPosition.isInSameRowOrColumn(capturePosition))
             return false;
 
         BoardPiece currentPlayerPiece = getElement(currentPlayerPosition);
 
-        if(!currentPlayerPiece.isEmpty() && currentPlayerPiece.getFirst() == turn
-                && currentPlayerPiece.length() >= move.getNumberOfPieces() && move.isInTheSameRowOrColumn())
+        if(!currentPlayerPiece.isEmpty()
+                && currentPlayerPiece.getFirst() == currentTurn
+                && currentPlayerPiece.length() >= move.getNumberOfPieces())
         {
-            int distance = currentPlayerPosition.calculateDistanceTo(opponentPosition);
-            return distance <= move.getNumberOfPieces();
+            int distance = currentPlayerPosition.calculateDistanceTo(capturePosition);
+            return distance == move.getNumberOfPieces();
         }
 
         return false;
@@ -128,7 +130,7 @@ public class FocusBoard {
                 Position position = new Position(i,j);
                 BoardPiece piece = this.getElement(position);
 
-                if(piece != null && piece.getFirst() == turn)
+                if(piece != null && piece.getFirst() == currentTurn)
                 {
                     for (Move move: piece.generateAllMoves(position))
                     {
@@ -139,15 +141,11 @@ public class FocusBoard {
             }
         }
 
-
         return moves;
     }
 
-    public boolean applyMove(Move move)
+    public void applyMove(Move move)
     {
-        if(!canPlayMove(move))
-            return false;
-
         Position currentPlayerPosition = move.getPlayerPosition();
         Position capturePosition = move.getCapturePosition();
 
@@ -158,7 +156,6 @@ public class FocusBoard {
         currentPlayerPiece.capturePiece(capturePlayerPiece, move.getNumberOfPieces());
 
         this.switchTurn();
-        return true;
     }
 
     public boolean isGameOver()
@@ -192,20 +189,20 @@ public class FocusBoard {
 
     private void switchTurn()
     {
-        if(this.turn == 'G')
-            this.turn = 'R';
+        if(this.currentTurn == BoardPiece.GREEN)
+            this.currentTurn = BoardPiece.RED;
         else
-            this.turn = 'G';
+            this.currentTurn = BoardPiece.GREEN;
     }
 
     private void addToCapturePile(int total)
     {
-        if(total > MAXSIZE)
+        if(total > BoardPiece.MAX_SIZE)
         {
-            if(this.turn == 'G')
-                this.greedCaptured += total - MAXSIZE;
+            if(this.currentTurn == BoardPiece.GREEN)
+                this.greedCaptured += total - BoardPiece.MAX_SIZE;
             else
-                this.redCaptured += total - MAXSIZE;
+                this.redCaptured += total - BoardPiece.MAX_SIZE;
         }
     }
 
@@ -226,8 +223,8 @@ public class FocusBoard {
             builder.append("\n");
         }
 
-        builder.append("\nRed Capture: " + this.redCaptured + " Green Capture: " + this.greedCaptured);
-        builder.append("\nTurn: " + this.turn);
+        builder.append("\nRED Capture: " + this.redCaptured + " GREEN Capture: " + this.greedCaptured);
+        builder.append("\nTurn: " + this.currentTurn);
         return builder.toString();
     }
 }

@@ -3,13 +3,13 @@ package Comp.Assignment2;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ali on 2017-03-10.
- */
 public class BoardPiece {
 
     private StringBuilder stack;
-    public final int MAX_SIZE = 5;
+
+    public static final int MAX_SIZE = 5;
+    public static final char GREEN = 'G';
+    public static final char RED = 'R';
 
     public BoardPiece(String piece)
     {
@@ -60,16 +60,11 @@ public class BoardPiece {
     {
         List<Move> moves = new ArrayList<>();
 
-        Position leftPosition = new Position(currentPosition.getRow(),
-                currentPosition.getColumn() - value);
-        Position rightPosition = new Position(currentPosition.getRow(),
-                currentPosition.getColumn() + value);
-
-        Move leftMove = new Move(currentPosition, leftPosition, value);
-        Move rightMove = new Move(currentPosition, rightPosition, value);
-
+        Move leftMove = Move.horizontalMove(currentPosition,value,-1);
+        Move rightMove = Move.horizontalMove(currentPosition,value, 1);
         moves.add(leftMove);
         moves.add(rightMove);
+
         return moves;
     }
 
@@ -77,16 +72,11 @@ public class BoardPiece {
     {
         List<Move> moves = new ArrayList<>();
 
-        Position upPosition = new Position(currentPosition.getRow() - value,
-                currentPosition.getColumn());
-        Position downPosition = new Position(currentPosition.getRow() + value,
-                currentPosition.getColumn());
-
-        Move upMove = new Move(currentPosition, upPosition, value);
-        Move downMove = new Move(currentPosition, downPosition, value);
-
+        Move upMove = Move.verticalMove(currentPosition,value, -1);
+        Move downMove = Move.verticalMove(currentPosition,value, 1);
         moves.add(upMove);
         moves.add(downMove);
+
         return moves;
     }
 

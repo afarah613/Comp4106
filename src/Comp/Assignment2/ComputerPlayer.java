@@ -47,7 +47,7 @@ public class ComputerPlayer implements IPlayer {
         if(depth == 0 || moves.isEmpty() || board.isGameOver())
             return heuristic.getValue(board, this.color);
 
-        if (board.getTurn() == color)
+        if (board.getCurrentTurn() == color)
         {
             for (Move move: moves) {
 

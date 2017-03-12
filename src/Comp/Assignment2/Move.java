@@ -27,14 +27,29 @@ public class Move {
         return capturePosition;
     }
 
-    public boolean isInTheSameRowOrColumn()
-    {
-        return this.playerPosition.getRow() == this.capturePosition.getRow()
-                || this.playerPosition.getColumn() == this.capturePosition.getColumn();
-    }
 
     public int getNumberOfPieces() {
         return numberOfPieces;
+    }
+
+    public static Move horizontalMove(Position currentPosition, int value, int direction)
+    {
+        int directionValue = direction * value;
+
+        Position newPosition = new Position(currentPosition.getRow(),
+                currentPosition.getColumn() + directionValue);
+
+        return new Move(currentPosition, newPosition, value);
+    }
+
+    public static Move verticalMove(Position currentPosition, int value, int direction)
+    {
+        int directionValue = direction* value;
+
+        Position newPosition = new Position(currentPosition.getRow() + directionValue,
+                currentPosition.getColumn());
+
+        return new Move(currentPosition, newPosition, value);
     }
 
     public String toString()

@@ -1,8 +1,5 @@
 package Comp.Assignment2;
 
-/**
- * Created by Ali on 2017-03-11.
- */
 public class CapturedHeuristics implements IHeuristic {
 
     @Override

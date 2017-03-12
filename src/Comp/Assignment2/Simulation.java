@@ -24,21 +24,23 @@ public class Simulation {
         {
             Move player1Move = player1.getMove();
 
-            while(!this.focusBoard.applyMove(player1Move))
+            while(!this.focusBoard.canPlayMove(player1Move))
             {
                 System.out.println("Move is invalid! Please try again");
                 player1Move = player1.getMove();
             }
 
+            this.focusBoard.applyMove(player1Move);
             System.out.println(this.focusBoard);
             Move player2Move = player2.getMove();
 
-            while(!this.focusBoard.applyMove(player2Move))
+            while(!this.focusBoard.canPlayMove(player2Move))
             {
                 System.out.println("Move is invalid! Please try again");
                 player2Move = player2.getMove();
             }
 
+            this.focusBoard.applyMove(player2Move);
             System.out.println(this.focusBoard);
         }
     }
@@ -47,8 +49,8 @@ public class Simulation {
     {
         FocusBoard board = new FocusBoard();
         IHeuristic heuristic = new CapturedHeuristics();
-        IPlayer player = new ComputerPlayer('G',heuristic,board);
-        IPlayer player2 = new ComputerPlayer('R',heuristic,board);
+        IPlayer player = new ComputerPlayer(BoardPiece.GREEN,heuristic,board);
+        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic,board);
         Simulation simulation = new Simulation(board, player, player2);
         simulation.simulate();
     }
