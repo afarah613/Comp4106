@@ -170,6 +170,14 @@ public class FocusBoard {
         return false;
     }
 
+    public char getGameWinner()
+    {
+        if(this.getGreenCaptured()>= MAX_CAPTURED)
+            return BoardPiece.GREEN;
+        else
+            return BoardPiece.RED;
+    }
+
     private  boolean isValidPosition(Position position)
     {
         return isValidPosition(position.getRow(), position.getColumn());
@@ -215,6 +223,9 @@ public class FocusBoard {
 
         StringBuilder builder = new StringBuilder();
 
+        if(this.recentMove!= null)
+            builder.append(this.recentMove + "\n");
+
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if (isValidPosition(i, j)) {
@@ -229,8 +240,6 @@ public class FocusBoard {
         }
 
         builder.append("\nRED Capture: " + this.redCaptured + " GREEN Capture: " + this.greenCaptured);
-        if(this.recentMove!= null)
-            builder.append("\n"+ this.recentMove);
         builder.append("\nTurn: " + this.currentTurn);
 
         return builder.toString();

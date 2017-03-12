@@ -10,7 +10,7 @@ public class ComputerPlayer implements IPlayer {
     private char color;
     private IHeuristic heuristic;
     private FocusBoard focusBoard;
-    private final int MAX_DEPTH = 4;
+    private final int MAX_DEPTH = 3;
     private Move bestMove;
 
     public ComputerPlayer(char color, IHeuristic heuristic, FocusBoard board)

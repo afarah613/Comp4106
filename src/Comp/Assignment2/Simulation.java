@@ -49,6 +49,8 @@ public class Simulation {
             this.focusBoard.applyMove(player2Move);
             System.out.println(this.focusBoard);
         }
+
+        System.out.println(this.focusBoard.getGameWinner() + " has won the Game");
     }
 
     private static IHeuristic getHeuristic()
