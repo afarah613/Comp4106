@@ -10,9 +10,10 @@ public class FocusBoard {
     private int greedCaptured;
     private char turn;
 
-    private final int COLUMNS = 8;
-    private final int ROWS = 8;
+    public static final int COLUMNS = 8;
+    public static final int ROWS = 8;
     private final int MAXSIZE = 5;
+    private final int MAX_CAPTURED = 5;
 
     private final int[][] blockedPosition = {
             {0, 0},
@@ -78,6 +79,24 @@ public class FocusBoard {
         this();
         this.turn = turn;
     }
+    public int getRedCaptured() {
+        return redCaptured;
+    }
+
+    public BoardPiece[][] getBoard()
+    {
+        return this.board;
+    }
+
+    public int getGreedCaptured() {
+        return greedCaptured;
+
+    }
+
+    public char getTurn()
+    {
+        return this.turn;
+    }
 
     private boolean canPlayMove(Move move)
     {
@@ -131,17 +150,21 @@ public class FocusBoard {
 
         Position currentPlayerPosition = move.getPlayerPosition();
         Position capturePosition = move.getCapturePosition();
+
         BoardPiece currentPlayerPiece = getElement(currentPlayerPosition);
         BoardPiece capturePlayerPiece = getElement(capturePosition);
+
         this.addToCapturePile(move.getNumberOfPieces() + capturePlayerPiece.length());
         currentPlayerPiece.capturePiece(capturePlayerPiece, move.getNumberOfPieces());
+
         this.switchTurn();
         return true;
     }
 
     public boolean isGameOver()
     {
-        // TODO check if game is over
+        if(this.greedCaptured == MAX_CAPTURED || this.redCaptured == MAX_CAPTURED)
+            return true;
         return false;
     }
 
@@ -202,6 +225,7 @@ public class FocusBoard {
 
             builder.append("\n");
         }
+
         builder.append("\nRed Capture: " + this.redCaptured + " Green Capture: " + this.greedCaptured);
         builder.append("\nTurn: " + this.turn);
         return builder.toString();

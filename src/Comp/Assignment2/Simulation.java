@@ -46,8 +46,9 @@ public class Simulation {
     public static void main(String[] args)
     {
         FocusBoard board = new FocusBoard();
-        IPlayer player = new HumanPlayer(Color.Green);
-        IPlayer player2 = new HumanPlayer(Color.Red);
+        IHeuristic heuristic = new CapturedHeuristics();
+        IPlayer player = new ComputerPlayer('G',heuristic,board);
+        IPlayer player2 = new ComputerPlayer('R',heuristic,board);
         Simulation simulation = new Simulation(board, player, player2);
         simulation.simulate();
     }

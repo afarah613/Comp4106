@@ -3,20 +3,18 @@ package Comp.Assignment2;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/**
- * Created by Ali on 2017-03-05.
- */
+
 public class HumanPlayer implements IPlayer {
 
-    private Color color;
+    private char color;
 
-    public HumanPlayer(Color color)
+    public HumanPlayer(char color)
     {
         this.color = color;
     }
 
     @Override
-    public void setColor(Color color) {
+    public void setColor(char color) {
         this.color = color;
     }
 
@@ -35,7 +33,7 @@ public class HumanPlayer implements IPlayer {
     }
 
     @Override
-    public Color getColor() {
+    public char getColor() {
         return this.color;
     }
 

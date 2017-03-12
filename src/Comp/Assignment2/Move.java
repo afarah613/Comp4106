@@ -1,8 +1,6 @@
 package Comp.Assignment2;
 
-/**
- * Created by Ali on 2017-03-05.
- */
+
 public class Move {
 
     private Position playerPosition;

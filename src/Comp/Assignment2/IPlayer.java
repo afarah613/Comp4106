@@ -6,6 +6,6 @@ package Comp.Assignment2;
 public interface IPlayer {
 
     Move getMove();
-    Color getColor();
-    void setColor(Color color);
+    char getColor();
+    void setColor(char color);
 }
