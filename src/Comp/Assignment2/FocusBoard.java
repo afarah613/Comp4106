@@ -9,7 +9,7 @@ public class FocusBoard {
     private int redCaptured;
     private int greenCaptured;
     private char currentTurn;
-
+    private Move recentMove;
     public static final int COLUMNS = 8;
     public static final int ROWS = 8;
     private final int MAX_CAPTURED = 3;
@@ -33,16 +33,25 @@ public class FocusBoard {
         this.board = new BoardPiece[ROWS][COLUMNS];
         this.greenCaptured = 0;
         this.redCaptured = 0;
+        int greenPieces = 0;
+        int redPieces = 0;
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if (isValidPosition(i, j)) {
                     if (i > 0 && i < 7 && j > 0 && j < 7) {
-                        if(j%2 ==0) {
+
+                        int random = (int) (Math.random() * 2);
+                        if(random ==0 && greenPieces < 18) {
                             this.board[i][j] = new BoardPiece("G");
+                            greenPieces++;
+                        }
+                        else if(redPieces < 18) {
+                            this.board[i][j] = new BoardPiece("R");
+                            redPieces++;
                         }
                         else {
-                            this.board[i][j] = new BoardPiece("R");;
+                            this.board[i][j] = new BoardPiece("G");
                         }
                     } else {
                         this.board[i][j] = new BoardPiece("E");
@@ -151,6 +160,7 @@ public class FocusBoard {
         currentPlayerPiece.capturePiece(capturePlayerPiece, move.getNumberOfPieces());
 
         this.switchTurn();
+        this.recentMove = move;
     }
 
     public boolean isGameOver()
@@ -219,7 +229,10 @@ public class FocusBoard {
         }
 
         builder.append("\nRED Capture: " + this.redCaptured + " GREEN Capture: " + this.greenCaptured);
+        if(this.recentMove!= null)
+            builder.append("\n"+ this.recentMove);
         builder.append("\nTurn: " + this.currentTurn);
+
         return builder.toString();
     }
 }

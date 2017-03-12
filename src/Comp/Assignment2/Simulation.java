@@ -88,7 +88,7 @@ public class Simulation {
 
                 if(type == 1)
                     return new HumanPlayer(color);
-                else
+                else if(type == 2)
                 {
                     IHeuristic heuristic = getHeuristic();
                     return new ComputerPlayer(color, heuristic, board);
@@ -103,13 +103,13 @@ public class Simulation {
     public static void main(String[] args)
     {
         FocusBoard board = new FocusBoard();
-//        IHeuristic heuristic = new DifferenceHeuristic();
-//        IHeuristic heuristic1 = new CapturedHeuristic();
-//        IPlayer player = new ComputerPlayer(BoardPiece.GREEN,heuristic,board);
-//        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic1,board);
+        IHeuristic heuristic = new DifferenceHeuristic();
+        IHeuristic heuristic1 = new CapturedHeuristic();
+        IPlayer player = new ComputerPlayer(BoardPiece.GREEN,heuristic,board);
+        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic1,board);
 
-        IPlayer player = getPlayer(BoardPiece.GREEN,board);
-        IPlayer player2 = getPlayer(BoardPiece.RED,board);
+//        IPlayer player = getPlayer(BoardPiece.GREEN,board);
+//        IPlayer player2 = getPlayer(BoardPiece.RED,board);
         Simulation simulation = new Simulation(board, player, player2);
         simulation.simulate();
     }
