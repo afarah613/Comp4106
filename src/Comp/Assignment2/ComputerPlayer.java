@@ -10,19 +10,20 @@ public class ComputerPlayer implements IPlayer {
     private char color;
     private IHeuristic heuristic;
     private FocusBoard focusBoard;
-    private final int MAX_DEPTH = 3;
+    private int maxDepth;
     private Move bestMove;
 
-    public ComputerPlayer(char color, IHeuristic heuristic, FocusBoard board)
+    public ComputerPlayer(char color,int maxDepth, IHeuristic heuristic, FocusBoard board)
     {
         this.color = color;
+        this.maxDepth = maxDepth;
         this.focusBoard = board;
         this.heuristic = heuristic;
     }
 
     @Override
     public Move getMove() {
-        alphaBeta(this.focusBoard,MAX_DEPTH, Integer.MIN_VALUE,Integer.MAX_VALUE);
+        alphaBeta(this.focusBoard, this.maxDepth, Integer.MIN_VALUE,Integer.MAX_VALUE);
         return bestMove;
     }
 
@@ -58,7 +59,7 @@ public class ComputerPlayer implements IPlayer {
 
                 if(result > alpha)
                 {
-                    if(depth == MAX_DEPTH)
+                    if(depth == this.maxDepth)
                         bestMove = move;
                     alpha = result;
                 }

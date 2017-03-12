@@ -53,6 +53,24 @@ public class Simulation {
         System.out.println(this.focusBoard.getGameWinner() + " has won the Game");
     }
 
+    private static int getDepth()
+    {
+        System.out.println("Select the depth.");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        while(true)
+        {
+            try{
+                String line = br.readLine();
+                int depth = Integer.parseInt(line);
+                return depth;
+            }catch(Exception e){
+                System.err.println("Invalid Format! Please try again");
+                System.out.println("Select the depth");
+            }
+        }
+    }
+
     private static IHeuristic getHeuristic()
     {
         System.out.println("Select the type of heuristic. Enter 1 for Difference or 2 for Captured");
@@ -68,7 +86,10 @@ public class Simulation {
                     return new DifferenceHeuristic();
                 else if(type ==2)
                     return new CapturedHeuristic();
-
+                else {
+                    System.err.println("Invalid Format! Please try again");
+                    System.out.println("Enter 1 for Difference or 2 for Captured");
+                }
 
             }catch(Exception e){
                 System.err.println("Invalid Format! Please try again");
@@ -93,7 +114,12 @@ public class Simulation {
                 else if(type == 2)
                 {
                     IHeuristic heuristic = getHeuristic();
-                    return new ComputerPlayer(color, heuristic, board);
+                    int depth = getDepth();
+                    return new ComputerPlayer(color,depth, heuristic, board);
+                }
+                else {
+                    System.err.println("Invalid Format! Please try again");
+                    System.out.println("Enter 1 for Human or 2 for AI");
                 }
             }catch(Exception e){
                 System.err.println("Invalid Format! Please try again");
@@ -105,13 +131,13 @@ public class Simulation {
     public static void main(String[] args)
     {
         FocusBoard board = new FocusBoard();
-        IHeuristic heuristic = new DifferenceHeuristic();
-        IHeuristic heuristic1 = new CapturedHeuristic();
-        IPlayer player = new ComputerPlayer(BoardPiece.GREEN,heuristic,board);
-        IPlayer player2 = new ComputerPlayer(BoardPiece.RED,heuristic1,board);
+//        IHeuristic heuristic = new DifferenceHeuristic();
+//        IHeuristic heuristic1 = new CapturedHeuristic();
+//        IPlayer player = new ComputerPlayer(BoardPiece.GREEN, 3,heuristic,board);
+//        IPlayer player2 = new ComputerPlayer(BoardPiece.RED, 3,heuristic1,board);
 
-//        IPlayer player = getPlayer(BoardPiece.GREEN,board);
-//        IPlayer player2 = getPlayer(BoardPiece.RED,board);
+        IPlayer player = getPlayer(BoardPiece.GREEN,board);
+        IPlayer player2 = getPlayer(BoardPiece.RED,board);
         Simulation simulation = new Simulation(board, player, player2);
         simulation.simulate();
     }
