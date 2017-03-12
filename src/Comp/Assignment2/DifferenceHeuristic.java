@@ -6,7 +6,7 @@ public class DifferenceHeuristic implements IHeuristic {
     public int getValue(FocusBoard focusBoard, IPlayer player) {
 
         BoardPiece[][] board = focusBoard.getBoard();
-        int differenceBetweenCapturedPieces = 0;
+        int capturedPieces = 0;
 
         int currentPlayerPieces = 0;
         int opponentPlayerPieces = 0;
@@ -24,10 +24,10 @@ public class DifferenceHeuristic implements IHeuristic {
         int differenceBetweenPieces = currentPlayerPieces - opponentPlayerPieces;
 
         if (player.getColor() == BoardPiece.GREEN)
-            differenceBetweenCapturedPieces = focusBoard.getGreenCaptured() - focusBoard.getRedCaptured();
+            capturedPieces = focusBoard.getGreenCaptured();
         else
-            differenceBetweenCapturedPieces = focusBoard.getRedCaptured() - focusBoard.getGreenCaptured();
+            capturedPieces = focusBoard.getRedCaptured();
 
-        return differenceBetweenPieces + (differenceBetweenCapturedPieces * 5);
+        return differenceBetweenPieces + (capturedPieces * 5);
     }
 }

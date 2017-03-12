@@ -155,7 +155,7 @@ public class FocusBoard {
 
     public boolean isGameOver()
     {
-        if(this.greenCaptured == MAX_CAPTURED || this.redCaptured == MAX_CAPTURED)
+        if(this.greenCaptured >= MAX_CAPTURED || this.redCaptured >= MAX_CAPTURED)
             return true;
         return false;
     }
