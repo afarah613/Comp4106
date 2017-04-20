@@ -1,0 +1,14 @@
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\FinalProject.exe.config
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\FinalProject.exe
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\FinalProject.pdb
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.dll
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.pdb
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.xml
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.Linq.pdb
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\System.Data.SQLite.Linq.xml
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\obj\Debug\FinalProject.csprojResolveAssemblyReference.cache
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\obj\Debug\FinalProject.exe
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\obj\Debug\FinalProject.pdb
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\C5.dll
+C:\Users\Ali\Documents\Comp4106\FinalProject\FinalProject\bin\Debug\C5.pdb
